@@ -3,14 +3,14 @@ import random
 from pygame.locals import *
 from sys import exit
 import time
-
+import os
 
 pygame.init()
 
-pygame.mixer.music.set_volume(0.17)
+pygame.mixer.music.set_volume(0.2)
 musica_de_fundo = pygame.mixer.music.load('BoxCat Games - Victory.mp3')
 pygame.mixer.music.play(-1)
-musica_da_derrtota = pygame.mixer.music.load('smw_game_over.wav')
+
 
 
 #aqui definimos a largura e a altura que vai ter a tela do jogo
@@ -45,6 +45,8 @@ class mosca(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (610//7, 511//7))
         self.rect = self.image.get_rect()
         self.rect.topleft = nova_posicao
+        self.fonte = pygame.font.match_font('arial')
+        self.tela_inicial()
 
     def update(self):
         self.atual += 1
@@ -54,7 +56,48 @@ class mosca(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (610//7, 511//7))
         self.rect = self.image.get_rect()
         self.rect.topleft = nova_posicao
+    
+    def tela_inicial(self):
+        diretorio_imagens = os.path.join(os.getcwd(),'imagens')
+        self.background = os.path.join(diretorio_imagens,'background.webp')
+        pygame.image.load(self.background).convert()
+    
+    def mostrar_texto(self,texto,tamanho,cor,x,y):
+        fonte= pygame.font.Font(self.fonte, tamanho)
+        texto = fonte.render(texto, True, cor)
+        texto_rect = texto.get_rect()
+        texto_rect.midtop(x,y)
+        self.tela.blit(texto, texto_rect)
+   
+    def mostrar_inicio(self,x,y):
+        mostrar_inicio_rect = self.background.get_rect()
+        mostrar_inicio_rect.midtop(x,y)
+        self.tela.blit(self.background, mostrar_inicio_rect)
+          
+
+    def mostra_tela(self):
+        self.mostrar_inicio(largura/2,20)
+        self.mostrar_texto('Pressione qualquer tecla para iniciar',40,(0,0,0),largura/2,320)
+        self.mostrar_texto('Desenvolvido por Gabriel Bastos e João Felipe',15,(255,255,255),largura/2,600)
+        pygame.display.flip()
         
+
+        self.esperar_por_usuario()
+    def esperar_por_usuario(self):
+        esperando = True
+        while esperando:
+            self.relogio.tick(60)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    esperando= False
+                if event.type == pygame.KEYUP:
+                    esperando = False
+
+
+
+    
+        
+
 
 nova_posicao =posicaoRandomica()
 sprites = pygame.sprite.Group()
