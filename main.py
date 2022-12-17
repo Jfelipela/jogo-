@@ -10,7 +10,7 @@ pygame.init()
 pygame.mixer.music.set_volume(0.17)
 musica_de_fundo = pygame.mixer.music.load('BoxCat Games - Victory.mp3')
 pygame.mixer.music.play(-1)
-
+musica_da_derrtota = pygame.mixer.music.load('smw_game_over.wav')
 
 
 #aqui definimos a largura e a altura que vai ter a tela do jogo
